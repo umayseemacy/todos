@@ -1,3 +1,21 @@
+Router.route('/register');
+Router.route('/login');
+Router.route('/', {
+  name: 'home',
+  template: 'home'
+});
+Router.route('/list',{
+  data: function(){
+    console.log("this.params");
+  }
+});
+
+Router.configure({
+  layoutTemplate: 'main'
+});
+
+
+
 
 if(Meteor.isClient) {
 
@@ -13,6 +31,36 @@ Template.todos.helpers({
     return Todos.find({}, {sort: {createdAt: -1}}).fetch();
   }
 });
+
+Template.todoItem.helpers({
+  'checked' : function(){
+    var isCompleted = this.completed;
+    if(isCompleted){
+      return "checked";
+    } else {
+        return "";
+    }
+    }
+});
+
+Template.todosCount.helpers({
+
+    'totalTodos' : function(){
+        return Todos.find().count();
+    },
+
+    'completedTodos' : function(){
+      return Todos.find({ completed : true }).count();
+    }
+
+});
+
+Template.lists.helpers({
+    'list' : function(){
+      return Lists.find({}, {sort: {name: 1}});
+    }
+});
+
 
 Template.addTodo.events({
   'submit form' : function(event){
@@ -61,4 +109,15 @@ Template.todoItem.events({
       console.log("Task marked as completed");
     }
     }
-})
+});
+
+Template.addList.events({
+  'submit form' : function(event){
+    event.preventDefault();
+    var listName = $('[name=listName]').val();
+      Lists.insert({
+        name: listName
+      });
+    $('[name=listName]').val('');
+  }
+});

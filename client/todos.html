@@ -1,10 +1,10 @@
-<head>
+<!-- <head>
     <title> Todos </title>
 </head>
 
 <body>
   {{> todos}}
-</body>
+</body> -->
 
 <template name="addTodo">
   <form>
@@ -14,8 +14,8 @@
 </template>
 
 <template name="todoItem">
-  <li>
-    <input type="checkbox">
+  <li class="{{checked}}">
+    <input type="checkbox" {{checked}}>
     <input type="text" value="{{name}}" name="todoItem">
     [<a href="#" class="delete-todo">Delete</a>]
   </li>
@@ -29,4 +29,65 @@
       {{> todoItem}}
     {{/each}}
   </ul>
+  {{> todosCount}}
+</template>
+
+<template name="todosCount">
+{{#if totalTodos}}
+  <p>
+    You have completed {{completedTodos}} out of {{totalTodos}}
+  </p>
+{{/if}}
+</template>
+
+<Template name="register">
+  <a href="/register">
+    <h2>Register</h2>
+  </a>
+</Template>
+
+<Template name="home">
+  <p>
+    Welcome to the Todos application.
+  </p>
+</Template>
+
+<Template name="main">
+  <h1>Todos</h1>
+  {{> navigation}}
+  {{> lists}}
+  {{> yield}}
+  <hr />
+  <p>Copyright &copy; Todos, 2014-2015.</p>
+</Template>
+
+<Template name="login">
+<p>log in</p>
+</template>
+
+<template name="navigation">
+  <ul>
+    <li><a href="{{pathFor route='home'}}"> Home </a></li>
+    <li><a href="{{pathFor route='register'}}"> Register</a></li>
+    <li><a href="{{pathFor route='login'}}"> Login</a></li>
+  </ul>
+</template>
+
+<template name="addList">
+  <form>Create a list:
+    <input type="text" placeholder="List name here..." name="listName">
+  </form>
+</template>
+
+<template name="lists">
+<h2>Lists</h2>
+{{> addList}}
+<ul>
+  {{#each list}}
+    <li>
+     <a href="/list/{{_id}}">{{name}}
+     </a>
+    </li>
+  {{/each}}
+</ul>
 </template>
